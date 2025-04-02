@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login and Signup</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .container {
+      position: relative;
+      width: 380px;
+      height: 550px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .form-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 40px;
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .login-container {
+      transform: translateX(0);
+      z-index: 5;
+    }
+
+    .signup-container {
+      transform: translateX(380px);
+      z-index: 2;
+    }
+
+    .container.slide-left .login-container {
+      transform: translateX(-380px);
+    }
+
+    .container.slide-left .signup-container {
+      transform: translateX(0);
+    }
+
+    h2 {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 0;
+      font-size: 16px;
+      color: #333;
+      border: none;
+      outline: none;
+      border-bottom: 1px solid #777;
+      background: transparent;
+    }
+
+    .input-group label {
+      position: absolute;
+      top: 12px;
+      left: 0;
+      font-size: 16px;
+      color: #777;
+      pointer-events: none;
+      transition: 0.3s ease-out;
+    }
+
+    .input-group input:focus ~ label,
+    .input-group input:valid ~ label {
+      top: -12px;
+      font-size: 13px;
+      color: #6c5ce7;
+    }
+
+    .submit-btn {
+      display: block;
+      width: 100%;
+      padding: 12px 0;
+      margin-top: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      background: #6c5ce7;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .submit-btn:hover {
+      background: #5649c0;
+    }
+
+    .forgot-password,
+    .signup-link,
+    .login-link {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+      color: #555;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .toggle-link {
+      color: #6c5ce7;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .success-message {
+      display: none;
+      text-align: center;
+      color: #4caf50;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .error-message {
+      display: none;
+      text-align: center;
+      color: #f44336;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    /* Social Login Styles */
+    .social-login {
+      margin-top: 20px;
+    }
+
+    .social-login h4 {
+      position: relative;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    .social-login h4::before,
+    .social-login h4::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 1px;
+      background-color: #ddd;
+    }
+
+    .social-login h4::before {
+      left: 0;
+    }
+
+    .social-login h4::after {
+      right: 0;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .social-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 140px;
+      padding: 10px;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+
+    .social-btn:hover {
+      opacity: 0.9;
+    }
+
+    .facebook-btn {
+      background-color: #3b5998;
+    }
+
+    .google-btn {
+      background-color: #db4437;
+    }
+
+    .social-icon {
+      margin-right: 8px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="form-container login-container">
+      <h2>Login</h2>
+      <form id="loginForm">
+        <div class="input-group">
+          <input type="email" id="loginEmail" required>
+          <label for="loginEmail">Email</label>
+        </div>
+        <div class="input-group">
+          <input type="password" id="loginPassword" required>
+          <label for="loginPassword">Password</label>
+        </div>
+        <button type="submit" class="submit-btn">Login</button>
+        <div id="loginSuccess" class="success-message">Login successful!</div>
+        <div id="loginError" class="error-message">Invalid email or password!</div>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+        
+        <div class="social-login">
+          <h4>Or login with</h4>
+          <div class="social-icons">
+            <a class="social-btn facebook-btn" id="facebookLogin">
+              <span class="social-icon">f</span>Facebook
+            </a>
+            <a class="social-btn google-btn" id="googleLogin">
+              <span class="social-icon">G</span>Google
+            </a>
+          </div>
+        </div>
+        
+        <p class="signup-link">Don't have an account? <span class="toggle-link" id="signupLink">Sign Up</span></p>
+      </form>
+    </div>
+
+    <div class="form-container signup-container">
+      <h2>Create Account</h2>
+      <form id="signupForm">
+        <div class="input-group">
+          <input type="text" id="signupName" required>
+          <label for="signupName">Full Name</label>
+        </div>
+        <div class="input-group">
+          <input type="email" id="signupEmail" required>
+          <label for="signupEmail">Email</label>
+        </div>
+        <div class="input-group">
+          <input type="password" id="signupPassword" required>
+          <label for="signupPassword">Password</label>
+        </div>
+        <button type="submit" class="submit-btn">Sign Up</button>
+        <div id="signupSuccess" class="success-message">Account created successfully!</div>
+        <div id="signupError" class="error-message">Email already in use!</div>
+        
+        <div class="social-login">
+          <h4>Or sign up with</h4>
+          <div class="social-icons">
+            <a class="social-btn facebook-btn" id="facebookSignup">
+              <span class="social-icon">f</span>Facebook
+            </a>
+            <a class="social-btn google-btn" id="googleSignup">
+              <span class="social-icon">G</span>Google
+            </a>
+          </div>
+        </div>
+        
+        <p class="login-link">Already have an account? <span class="toggle-link" id="loginLink">Login</span></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const container = document.getElementById('container');
+    const signupLink = document.getElementById('signupLink');
+    const loginLink = document.getElementById('loginLink');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const loginSuccess = document.getElementById('loginSuccess');
+    const loginError = document.getElementById('loginError');
+    const signupSuccess = document.getElementById('signupSuccess');
+    const signupError = document.getElementById('signupError');
+    
+    // Social login buttons
+    const facebookLogin = document.getElementById('facebookLogin');
+    const googleLogin = document.getElementById('googleLogin');
+    const facebookSignup = document.getElementById('facebookSignup');
+    const googleSignup = document.getElementById('googleSignup');
+
+    // Mock user database
+    let users = [
+      { email: 'test@example.com', password: 'password123', name: 'Test User' }
+    ];
+
+    // Toggle between login and signup forms
+    signupLink.addEventListener('click', () => {
+      container.classList.add('slide-left');
+      resetMessages();
+    });
+
+    loginLink.addEventListener('click', () => {
+      container.classList.remove('slide-left');
+      resetMessages();
+    });
+
+    // Login form submission
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      resetMessages();
+      
+      // Check if user exists
+      const user = users.find(user => user.email === email && user.password === password);
+      
+      if (user) {
+        loginSuccess.style.display = 'block';
+        setTimeout(() => {
+          alert(`Welcome back, ${user.name}!`);
+          loginForm.reset();
+          loginSuccess.style.display = 'none';
+        }, 1500);
+      } else {
+        loginError.style.display = 'block';
+      }
+    });
+
+    // Signup form submission
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('signupName').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      
+      resetMessages();
+      
+      // Check if email already exists
+      const existingUser = users.find(user => user.email === email);
+      
+      if (existingUser) {
+        signupError.style.display = 'block';
+      } else {
+        // Add new user
+        users.push({ email, password, name });
+        signupSuccess.style.display = 'block';
+        
+        setTimeout(() => {
+          alert(`Account created successfully! Welcome, ${name}!`);
+          signupForm.reset();
+          container.classList.remove('slide-left'); // Switch back to login
+          signupSuccess.style.display = 'none';
+        }, 1500);
+      }
+    });
+
+    // Social login handlers
+    facebookLogin.addEventListener('click', () => {
+      socialAuth('Facebook', 'login');
+    });
+
+    googleLogin.addEventListener('click', () => {
+      socialAuth('Google', 'login');
+    });
+
+    facebookSignup.addEventListener('click', () => {
+      socialAuth('Facebook', 'signup');
+    });
+
+    googleSignup.addEventListener('click', () => {
+      socialAuth('Google', 'signup');
+    });
+
+    // Handle social authentication
+    function socialAuth(provider, action) {
+      resetMessages();
+      
+      // In a real application, this would redirect to the OAuth provider
+      // For this demo, we'll just simulate the process
+      const userName = `${provider} User`;
+      const userEmail = `${provider.toLowerCase()}user@example.com`;
+      
+      setTimeout(() => {
+        alert(`${action === 'login' ? 'Logged in' : 'Signed up'} successfully with ${provider}!`);
+        
+        // If it's a new user, add them to our mock database
+        if (action === 'signup') {
+          const existingUser = users.find(user => user.email === userEmail);
+          if (!existingUser) {
+            users.push({ email: userEmail, password: null, name: userName, provider });
+          }
+          
+          // Switch to login form
+          container.classList.remove('slide-left');
+        }
+      }, 1000);
+    }
+
+    // Reset all message displays
+    function resetMessages() {
+      loginSuccess.style.display = 'none';
+      loginError.style.display = 'none';
+      signupSuccess.style.display = 'none';
+      signupError.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

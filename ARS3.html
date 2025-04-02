@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <title>BookVerse | Premium E-Book Marketplace</title>
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        scroll-behavior: smooth;
+      }
+
+      :root {
+        --primary: #4a76a8;
+        --secondary: #2c3e50;
+        --accent: #e74c3c;
+        --light: #ecf0f1;
+        --dark: #34495e;
+        --success: #2ecc71;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      /* Header Styles */
+      header {
+        background: linear-gradient(to right, var(--primary), var(--secondary));
+        color: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 5%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 0.5rem;
+        color: var(--accent);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1.5rem;
+      }
+
+      .nav-links a {
+        position: relative;
+        padding: 0.5rem 0;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background-color: white;
+        transition: width 0.3s;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      .search-container {
+        flex: 1;
+        max-width: 400px;
+        margin: 0 2rem;
+        position: relative;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 0.6rem 1rem;
+        border-radius: 20px;
+        border: none;
+        outline: none;
+        font-size: 0.9rem;
+        padding-left: 2.5rem;
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #aaa;
+      }
+
+      .user-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .cart-icon,
+      .user-icon {
+        position: relative;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+
+      .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--accent);
+        color: white;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.7rem;
+        font-weight: bold;
+      }
+
+      /* Hero Section */
+      .hero {
+        background-image: linear-gradient(
+            rgba(0, 0, 0, 0.6),
+            rgba(0, 0, 0, 0.6)
+          ),
+          url("https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=1600&q=80");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        padding: 1rem;
+      }
+
+      .hero-content {
+        max-width: 800px;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+      }
+
+      .cta-button {
+        background-color: var(--accent);
+        color: white;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+
+      .cta-button:hover {
+        background-color: #c0392b;
+      }
+
+      /* Categories Section */
+      .categories {
+        padding: 3rem 5%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        color: var(--secondary);
+        margin-bottom: 2rem;
+        position: relative;
+        display: inline-block;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        height: 3px;
+        width: 50%;
+        background-color: var(--accent);
+        bottom: -5px;
+        left: 0;
+      }
+
+      .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .category-card {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+        text-align: center;
+      }
+
+      .category-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .category-img {
+        height: 150px;
+        background-color: #ddd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        color: var(--primary);
+      }
+
+      .category-name {
+        padding: 1rem;
+        font-weight: bold;
+        color: var(--dark);
+      }
+
+      /* Featured Books Section */
+      .featured-books {
+        padding: 3rem 5%;
+        max-width: 1200px;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .book-slider {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+        position: relative;
+      }
+
+      .book-card {
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+        position: relative;
+        margin-bottom: 25px;
+      }
+
+      .book-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .book-thumb {
+        position: relative;
+        width: 100%;
+        height: 220px; /* Maintain proper aspect ratio */
+        background-color: #e0e0e0;
+        overflow: hidden;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .book-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Ensures full image is visible */
+        object-position: center;
+        transition: transform 0.3s ease;
+      }
+
+      .book-thumb:hover img {
+        transform: scale(1.05);
+      }
+
+      .book-info {
+        padding: 1rem;
+      }
+
+      .book-title {
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+      }
+
+      .book-author {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .book-price {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1rem;
+      }
+
+      .price {
+        font-weight: bold;
+        color: var(--accent);
+        font-size: 1.2rem;
+      }
+
+      .old-price {
+        text-decoration: line-through;
+        color: #999;
+        font-size: 0.9rem;
+        margin-right: 0.5rem;
+      }
+
+      .add-to-cart {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: background-color 0.3s;
+      }
+
+      .add-to-cart:hover {
+        background-color: var(--secondary);
+      }
+
+      .discount-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: var(--accent);
+        color: white;
+        padding: 0.3rem 0.6rem;
+        border-radius: 3px;
+        font-size: 0.8rem;
+        font-weight: bold;
+      }
+
+      /* Best Sellers Section */
+      .best-sellers {
+        background-color: var(--light);
+        padding: 3rem 5%;
+      }
+
+      .best-sellers-content {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .seller-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2rem;
+      }
+
+      /* Features Section */
+      .features {
+        padding: 4rem 5%;
+        background-color: white;
+      }
+
+      .features-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+      }
+
+      .feature-item {
+        padding: 2rem;
+        border-radius: 10px;
+        background-color: var(--light);
+        transition: transform 0.3s;
+      }
+
+      .feature-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .feature-title {
+        font-size: 1.2rem;
+        color: var(--dark);
+        margin-bottom: 1rem;
+      }
+
+      /* Testimonials Section */
+      .testimonials {
+        padding: 4rem 5%;
+        background-color: var(--secondary);
+        color: white;
+      }
+
+      .testimonials-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .testimonials .section-title {
+        color: white;
+        display: block;
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .testimonials .section-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .testimonial-slide {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        padding: 2rem;
+        margin: 0 auto;
+        max-width: 700px;
+      }
+
+      .testimonial-text {
+        font-style: italic;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        line-height: 1.7;
+      }
+
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .author-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: #ddd;
+        margin-right: 1rem;
+        overflow: hidden;
+      }
+
+      .author-info h4 {
+        margin-bottom: 0.2rem;
+      }
+
+      .author-info p {
+        opacity: 0.7;
+        font-size: 0.9rem;
+      }
+
+      /* Newsletter Section */
+      .newsletter {
+        padding: 3rem 5%;
+        background-color: var(--light);
+      }
+
+      .newsletter-content {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .newsletter-form {
+        display: flex;
+        margin-top: 2rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 50px;
+        overflow: hidden;
+      }
+
+      .newsletter-input {
+        flex: 1;
+        padding: 1rem 1.5rem;
+        border: none;
+        outline: none;
+        font-size: 1rem;
+      }
+
+      .newsletter-button {
+        background-color: var(--accent);
+        color: white;
+        border: none;
+        padding: 0 1.5rem;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s;
+      }
+
+      .newsletter-button:hover {
+        background-color: #c0392b;
+      }
+
+      /* Footer */
+      .footer {
+        background-color: #2c3e50;
+        color: #fff;
+        padding: 3rem 0 1rem 0;
+        margin-top: 4rem;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        padding: 0 2rem;
+      }
+
+      .footer-section {
+        padding: 1rem;
+      }
+
+      .footer-section h3 {
+        color: #fff;
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+
+      .footer-section h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -0.5rem;
+        width: 50px;
+        height: 2px;
+        background-color: var(--primary);
+      }
+
+      .review-form {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 1.5rem;
+        border-radius: 8px;
+      }
+
+      .review-form h4 {
+        margin-bottom: 1rem;
+        color: #ecf0f1;
+      }
+
+      .review-form select,
+      .review-form input,
+      .review-form textarea {
+        width: 100%;
+        padding: 0.8rem;
+        margin-bottom: 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #000000;
+        font-weight: 500;
+        border-radius: 4px;
+      }
+
+      .review-form textarea {
+        height: 100px;
+        resize: vertical;
+      }
+
+      .review-form button {
+        width: 100%;
+        padding: 0.8rem;
+        border-radius: 4px;
+      }
+
+      .contact-info {
+        margin-bottom: 2rem;
+      }
+
+      .contact-info p {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .social-link {
+        color: #fff;
+        font-size: 1.5rem;
+        transition: color 0.3s ease;
+      }
+
+      .social-link:hover {
+        color: var(--primary);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 2rem;
+        margin-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      @media (max-width: 768px) {
+        .footer-content {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Hamburger Menu Styles */
+      .hamburger {
+        display: none;
+        cursor: pointer;
+      }
+
+      .hamburger .bar {
+        width: 25px;
+        height: 3px;
+        background-color: white;
+        margin: 5px 0;
+        transition: all 0.3s ease;
+      }
+
+      @media screen and (max-width: 768px) {
+        .hamburger {
+          display: block;
+          z-index: 100;
+        }
+
+        .nav-links {
+          position: fixed;
+          left: -100%;
+          top: 0;
+          height: 100vh;
+          flex-direction: column;
+          background-color: var(--secondary);
+          width: 80%;
+          padding-top: 80px;
+          transition: 0.3s ease-in-out;
+          box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-links.active {
+          left: 0;
+        }
+
+        .nav-links a {
+          margin: 1.2rem 0;
+          font-size: 1.1rem;
+          width: 100%;
+          text-align: left;
+          padding: 0.5rem 2rem;
+        }
+
+        .nav-links a:hover {
+          background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .search-container {
+          order: 1;
+          width: 100%;
+          margin: 1rem 0;
+        }
+
+        .user-actions {
+          order: 2;
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          padding: 1rem 0;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+      }
+      .book-card {
+        width: 381px;
+      }
+      .download {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: background-color 0.3s;
+      }
+      .download:hover {
+        background-color: var(--secondary);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Section -->
+    <header>
+      <div class="navbar">
+        <div class="hamburger">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        <a href="#" class="logo">
+          <i class="fas fa-book"></i>
+          BookVerse
+        </a>
+        <div class="nav-links">
+          <a href="#" class="active">Home</a>
+          <a href="#categories">Categories</a>
+          <a href="#featured-books">Best Sellers</a>
+          <a href="#new-releases">New Releases</a>
+          <a href="#deals">Deals</a>
+          <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search books..."
+            />
+          </div>
+          <div class="user-actions">
+            <div class="cart-icon" id="cart-icon">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count">0</span>
+            </div>
+            <div class="user-icon" id="user-icon">
+             <a href="/signup.html"><i class="fas fa-user"></i></a> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Discover Your Next Favorite Book</h1>
+        <p>
+          Thousands of e-books at your fingertips. Start your reading journey
+          today!
+        </p>
+        <a href="#" class="cta-button">Explore Library</a>
+      </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section id="categories">
+      <h2 class="section-title">Browse Categories</h2>
+      <div class="category-grid">
+        <div class="category-card">
+          <div class="category-img">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <div class="category-name">Fiction</div>
+        </div>
+        <div class="category-card">
+          <div class="category-img">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              x="0px"
+              y="0px"
+              width="50"
+              height="50"
+              viewBox="0,0,255.99365,255.99365"
+            >
+              <g
+                fill="#4a76a8"
+                fill-rule="nonzero"
+                stroke="none"
+                stroke-width="1"
+                stroke-linecap="butt"
+                stroke-linejoin="miter"
+                stroke-miterlimit="10"
+                stroke-dasharray=""
+                stroke-dashoffset="0"
+                font-family="none"
+                font-weight="none"
+                font-size="none"
+                text-anchor="none"
+                style="mix-blend-mode: normal"
+              >
+                <g transform="scale(5.12,5.12)">
+                  <path
+                    d="M25.06055,0.00977c-6.61,4.68 -5.23094,9.36031 -3.96094,11.57031c0.47,0.84 0.92969,1.33008 0.92969,1.33008c0,0 0.71984,1.20899 3.08984,1.20899c2.5,0 3.30078,-1.58008 3.30078,-1.58008c0,0 0.37953,-0.39883 0.76953,-1.04883c0.83,-1.39 1.67992,-3.90937 -1.08008,-6.10937c-3.88,-3.1 -3.11883,-5.20109 -3.04883,-5.37109zM18.08008,6.98047c-0.95,0.02 -2.49945,0.17984 -4.18945,0.83984c-2.56,0.99 -5.98984,3.32937 -7.83984,8.85938c-0.34,1.04 -0.98055,2.37078 -2.06055,2.80078c-0.69,0.28 -1.53953,0.15867 -2.51953,-0.36133c-0.31,-0.17 -0.68023,-0.15852 -0.99023,0.02148c-0.3,0.18 -0.48047,0.50937 -0.48047,0.85938c0,0.69 0.12,17 11,17h1.50977c0.44,1.38 1.31039,2.59969 1.90039,3.42969l0.25,0.34961c0.35,0.53 0.6793,1.26102 1.0293,2.04102c1.16,2.61 2.75086,6.17969 7.63086,6.17969h3.35938c4.92,0 6.50992,-3.59094 7.66992,-6.21094c0.33,-0.76 0.64977,-1.4893 1.00977,-2.0293c0.08,-0.13 0.19055,-0.28898 0.31055,-0.45898c0.56,-0.79 1.38055,-1.97078 1.81055,-3.30078h1.51953c10.88,0 11,-16.31 11,-17c0,-0.35 -0.18047,-0.67938 -0.48047,-0.85937c-0.31,-0.18 -0.68023,-0.19148 -0.99023,-0.02148c-0.98,0.52 -1.81953,0.64133 -2.51953,0.36133c-1.08,-0.43 -1.72055,-1.76078 -2.06055,-2.80078c-1.85,-5.53 -5.27984,-7.86938 -7.83984,-8.85938c-1.84,-0.72 -3.49992,-0.83984 -4.41992,-0.83984c0.18,0.54 0.27078,1.02898 0.30078,1.45898c0.07,0.94 -0.10109,1.82008 -0.37109,2.58008c-0.13,0.38 -0.28922,0.72102 -0.44922,1.04102c-0.24,0.45 -0.48898,0.83867 -0.70898,1.13867c0.49,-0.12 1.00906,-0.19922 1.53906,-0.19922c3.71,0 6,3.63 6,7c0,4.75 -0.84953,6.45984 -2.01953,8.83984l-0.12109,0.23047c-0.8,1.64 -0.53859,3.16953 -0.30859,4.51953c0.11,0.62 0.20898,1.19976 0.20898,1.75977c0,1.34 -1.0807,2.88078 -1.7207,3.80078c-0.14,0.2 -0.25937,0.36953 -0.35937,0.51953c-0.44,0.68 -0.79016,1.47055 -1.16016,2.31055c-1.14,2.58 -2.21984,5.01953 -5.83984,5.01953h-3.35938c-3.58,0 -4.71078,-2.54023 -5.80078,-4.99023c-0.39,-0.87 -0.74898,-1.67938 -1.20898,-2.35937l-0.27148,-0.38086c-0.68,-0.95 -1.79883,-2.51992 -1.79883,-3.91992c0,-0.55 0.09899,-1.13 0.20899,-1.75c0.23,-1.35 0.49141,-2.8893 -0.30859,-4.5293l-0.12109,-0.23047c-1.17,-2.38 -2.01953,-4.08984 -2.01953,-8.83984c0,-3.37 2.29,-7 6,-7c0.62,0 1.2193,0.09977 1.7793,0.25977c-0.25,-0.38 -0.53859,-0.86922 -0.80859,-1.44922c-0.12,-0.24 -0.23008,-0.50125 -0.33008,-0.78125c-0.42,-1.13 -0.71055,-2.50883 -0.56055,-4.04883zM20,27v3c0,0.50187 -0.02428,1.02428 -0.04297,1.54297c-1.27054,-0.14428 -2.43945,-0.25195 -2.43945,-0.25195l-0.4707,-0.03711l-0.06445,0.4668c-0.11138,0.80093 0.22978,1.57116 0.80469,2.14063c0.47662,0.4721 1.12333,0.81529 1.85938,0.99609c-0.00058,0.00203 -0.00137,0.0058 -0.00195,0.00781c-0.275,0.971 -0.63608,1.59739 -0.95508,2.15039c-0.37,0.641 -0.68945,1.19738 -0.68945,1.98438c0,1.33 1.017,2.125 2,2.125c0.875,0 1.19528,0.52289 1.23828,0.58789c0.929,1.421 1.68277,3.28711 3.75977,3.28711c2.077,0 2.83077,-1.86611 3.75977,-3.28711c0.041,-0.063 0.36719,-0.58789 1.24219,-0.58789c0.983,0 2,-0.80539 2,-2.15039c0,-0.818 -0.32327,-1.39164 -0.69727,-2.05664c-0.30024,-0.53387 -0.64164,-1.14262 -0.94727,-2.06055c0.73536,-0.18088 1.38078,-0.52434 1.85742,-0.99609c0.57493,-0.56905 0.91537,-1.33945 0.80469,-2.14062l-0.06445,-0.46484l-0.46875,0.03516c0,0 -1.17735,0.105 -2.45508,0.24805c-0.01571,-0.51663 -0.0371,-1.03653 -0.03516,-1.53711c0.00604,-1.62605 0.00586,-3.00195 0.00586,-3.00195h-1c0,0 0.00018,1.37409 -0.00586,2.99805c-0.00207,0.53806 0.01897,1.09907 0.03711,1.6543c-0.07111,0.00947 -0.13479,0.01367 -0.20508,0.02344c-1.68666,0.23429 -2.4707,0.47265 -2.4707,0.47266l-0.4082,0.12305l0.05859,0.42383c0.11137,0.80083 0.64914,1.44876 1.35742,1.83984c0.57134,0.31547 1.2634,0.47091 1.99805,0.45508c0.01356,0.04937 0.02493,0.12335 0.03906,0.16602c0.337,1.021 0.72225,1.702 1.03125,2.25c0.343,0.609 0.57031,1.01336 0.57031,1.56836c0,0.72 -0.508,1.14844 -1,1.14844c-0.591,0 -1.23225,0.09772 -1.78125,0.63672c-0.409,0.402 -0.87192,0.7392 -1.41992,0.9082c-0.588,0.183 -1.22078,0.33203 -1.80078,0.33203c-0.58,0 -1.21183,-0.14908 -1.79883,-0.33008c-0.548,-0.169 -1.01288,-0.5062 -1.42187,-0.9082c-0.548,-0.539 -1.1883,-0.63477 -1.7793,-0.63477c-0.485,0 -1,-0.395 -1,-1.125c0,-0.521 0.22164,-0.90433 0.55664,-1.48633c0.33,-0.574 0.73983,-1.28795 1.04883,-2.37695c0.01065,-0.03784 0.01889,-0.10509 0.0293,-0.14844c0.73663,0.01662 1.43102,-0.13894 2.00391,-0.45508c0.70833,-0.39088 1.24603,-1.03887 1.35742,-1.83984l0.05859,-0.42383l-0.41211,-0.12305c0,0 -0.77347,-0.22876 -2.45898,-0.46289c-0.07882,-0.01095 -0.15059,-0.01673 -0.23047,-0.02734c0.02117,-0.55609 0.04688,-1.11783 0.04688,-1.6582v-3zM31.82422,32.36719c-0.07535,0.26694 -0.07079,0.54204 -0.31445,0.7832c-0.40157,0.39745 -1.02299,0.71286 -1.75391,0.81445c-0.73132,0.10158 -1.41544,-0.03348 -1.91016,-0.30664c-0.30606,-0.16899 -0.38066,-0.43962 -0.52539,-0.68164c0.24278,-0.0613 0.53641,-0.1321 1.22656,-0.24023c0.10871,0.4346 0.48499,0.76367 0.95313,0.76367c0.552,0 1,-0.448 1,-1c0,-0.0045 -0.0056,-0.00729 -0.00586,-0.01172c0.55344,-0.05557 1.02001,-0.09532 1.33008,-0.12109zM18.17578,32.36914c0.31024,0.02683 0.77567,0.06657 1.32813,0.12305c-0.00012,0.00297 -0.00391,0.00481 -0.00391,0.00781c0,0.552 0.448,1 1,1c0.466,0 0.84038,-0.32622 0.95117,-0.75781c0.69447,0.10778 0.98503,0.17609 1.22852,0.23633c-0.14477,0.24191 -0.21921,0.51268 -0.52539,0.68164c-0.49492,0.27311 -1.17926,0.40779 -1.91016,0.30664c-0.73127,-0.10158 -1.35231,-0.41862 -1.75391,-0.81641c-0.24316,-0.24085 -0.23904,-0.51498 -0.31445,-0.78125zM21,37v0.5c0,0.83 0.67,1.5 1.5,1.5c0.25,0 0.47969,-0.06992 0.67969,-0.16992c0.32,0.69 1.01031,1.16992 1.82031,1.16992c0.81,0 1.50031,-0.47992 1.82031,-1.16992c0.2,0.1 0.42969,0.16992 0.67969,0.16992c0.83,0 1.5,-0.67 1.5,-1.5v-0.5z"
+                  ></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div class="category-name">Horror</div>
+        </div>
+        <div class="category-card">
+          <div class="category-img">
+            <i class="fas fa-laptop-code"></i>
+          </div>
+          <div class="category-name">Technology</div>
+        </div>
+        <div class="category-card">
+          <div class="category-img">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <div class="category-name">Business</div>
+        </div>
+        <div class="category-card">
+          <div class="category-img">
+            <i class="fas fa-heart"></i>
+          </div>
+          <div class="category-name">Romance</div>
+        </div>
+        <div class="category-card">
+          <div class="category-img">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              x="0px"
+              y="0px"
+              width="50"
+              height="50"
+              viewBox="0,0,255.99365,255.99365"
+            >
+              <g
+                fill="#4a76a8"
+                fill-rule="nonzero"
+                stroke="none"
+                stroke-width="1"
+                stroke-linecap="butt"
+                stroke-linejoin="miter"
+                stroke-miterlimit="10"
+                stroke-dasharray=""
+                stroke-dashoffset="0"
+                font-family="none"
+                font-weight="none"
+                font-size="none"
+                text-anchor="none"
+                style="mix-blend-mode: normal"
+              >
+                <g transform="scale(5.12,5.12)">
+                  <path
+                    d="M25,2c-9.94141,0 -18,2.6875 -18,6v17c0,5.08203 5.41797,19.08203 18,22c12.58203,-2.91797 18,-16.91797 18,-22v-17c0,-3.3125 -8.05859,-6 -18,-6zM25,4c10.5,0 16,2.97266 16,4v17c0,4.13672 -4.33203,15.52344 -14,19.29688v-6.29687h-4v6.29688c-9.66797,-3.77344 -14,-15.16016 -14,-19.29688v-17c0,-1.02734 5.5,-4 16,-4zM17,11c-1.99609,0 -4.14453,0.87891 -6,4c1.95313,-1.35937 3.61328,-2 5,-2c2.6875,0 4.02734,3.14844 4.4375,3.5625c0.58594,0.58594 1.53516,0.58594 2.125,0c0.58594,-0.58594 0.58594,-1.53516 0,-2.125c-0.36719,-0.36328 -2.125,-3.4375 -5.5625,-3.4375zM33,11c-3.4375,0 -5.19531,3.07422 -5.5625,3.4375c-0.58594,0.58984 -0.58594,1.53906 0,2.125c0.58984,0.58594 1.53906,0.58594 2.125,0c0.41016,-0.41406 1.75,-3.5625 4.4375,-3.5625c1.38672,0 3.04688,0.64063 5,2c-1.85547,-3.12109 -4.00391,-4 -6,-4zM16,17c-1.64062,0 -3.08203,0.59375 -4,1.5c0.91797,0.90625 2.35938,1.5 4,1.5c1.64063,0 3.08203,-0.59375 4,-1.5c-0.91797,-0.90625 -2.35937,-1.5 -4,-1.5zM34,17c-1.64062,0 -3.08203,0.59375 -4,1.5c0.91797,0.90625 2.35938,1.5 4,1.5c1.64063,0 3.08203,-0.59375 4,-1.5c-0.91797,-0.90625 -2.35937,-1.5 -4,-1.5zM11,26l5,8h7l2,-2l2,2h7l5,-8l-6,5h-4l-3,-3h-2l-3,3h-4z"
+                  ></path>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div class="category-name">Mystery</div>
+        </div>
+        <div class="category-card">
+          <div class="category-img">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="48"
+              height="48"
+              viewBox="0 0 512 512"
+            >
+              <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+              <path
+                fill="#74C0FC"
+                d="M184 0c30.9 0 56 25.1 56 56l0 400c0 30.9-25.1 56-56 56c-28.9 0-52.7-21.9-55.7-50.1c-5.2 1.4-10.7 2.1-16.3 2.1c-35.3 0-64-28.7-64-64c0-7.4 1.3-14.6 3.6-21.2C21.4 367.4 0 338.2 0 304c0-31.9 18.7-59.5 45.8-72.3C37.1 220.8 32 207 32 192c0-30.7 21.6-56.3 50.4-62.6C80.8 123.9 80 118 80 112c0-29.9 20.6-55.1 48.3-62.1C131.3 21.9 155.1 0 184 0zM328 0c28.9 0 52.6 21.9 55.7 50.1c27.8 7 48.3 32.1 48.3 62.1c0 6-.8 11.9-2.4 17.4c28.8 6.2 50.4 31.9 50.4 62.6c0 15-5.1 28.8-13.8 39.7C493.3 244.5 512 272.1 512 304c0 34.2-21.4 63.4-51.6 74.8c2.3 6.6 3.6 13.8 3.6 21.2c0 35.3-28.7 64-64 64c-5.6 0-11.1-.7-16.3-2.1c-3 28.2-26.8 50.1-55.7 50.1c-30.9 0-56-25.1-56-56l0-400c0-30.9 25.1-56 56-56z"
+              />
+            </svg>
+          </div>
+          <div class="category-name">Mind books</div>
+        </div>
+        <div class="category-card">
+          <div class="category-img">
+            <img
+              src="data:image/png;base64,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"
+              alt="external-investment-currency-icongeek26-outline-colour-icongeek26-3"
+            />
+          </div>
+          <div class="category-name">Investment books</div>
+        </div>
+        <div class="category-card">
+          <div class="category-img">
+            <img
+              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAD4UlEQVR4nO2W+0+aZxTH+ftst3Rtmrr9sqVZltU1aZtsorNTZ7bZraWjrdZqNerUBQRFUbk4vHQGFOTubQNR4AVBLnIpCIL4Xd4nk4whuDUCkrzf5JuQ55wDz+d9znleWCxGjBgxYlQq1dTzcBnMYgDqmRNAVbcQ+9U87N4wXk3qqw/g2tcCJI7SODk5QSZzgrtcWXUBXGHzoNlyEwC3P4pbrePVAaC3ePBcuIr3G0dx46EQHWNafNQ2gduPpjGn24X2jz1caxJcXoBfZGZkMhkEwnEsb7ggWbbCtO3FUSpN1mkPykyVA6h7KsOMygrnfgSJZBrHxxm4fBGMzK7j+kMhrjbwsWhwkPVCDkUTlQEYkJqQSh0X3Ni2K0h6ne7/rgkdvMG3eTm+gxi6xfrKALj9EaTTx0U9q7Fl8+nTeNAxi/ZhJfG9Z3KyVlOpIe4R65BKpYn9oRgGpEayqbqnUgxKTUgmU0gkU+9049SUA4C+2w0WD5aMjjM3KVvZJhAPXvyWF6Pno19ixDYVRDSWgCcQgdLsREP3/OW5hSQqCxKJI3zSLs5Z//BbEf60+0ns3z48PELftKFyAJ89nsHdn2V4JlAjEj2EbmsvJ04PtMrsRDyeLOhYLImmnoXyAzR2zyMWS2Tt8obJC+ufOY+GlTk5tLd29/Hd4BLuv5Cjf8ZIwNes3vIDfNmpQDR6mDWHt5wTr20dB+UJ5eSYLB5cbxLm5PVO6Uns0x+nywtADzX95MLheNZDUhM+aBLi4x/E0KxTOTFfIJp3QjV/z0goFEdb/++VGeLb7WI8F6jh2Y8gFIoVNJe/UvA7LHYfXo6vVvYW+qpTgWDwLRyuA+xSAfL51IK5jYJ1V9g8UsPlqy8e4A5Hgp4J7X+GsDuDcLoPcKtlnDzx3kk9Grrmitbc4Ujg80XQ0rd48QA3m8ewtxfCT8PKczdf2yqCxxOCgwr+r5MbkpjgpW+w9qnStNCCxga3+wA8+RpufJN7g5ya/o8jmt8kecsGe3a9a2wVX3AkBTfPfqmAkwrAsEHlxS4MoLFLAYoKENt2fRibW8fjESWaXy8QdwjUUBvt2ZxOoSZb29q7CKfTj6nFTXw/sIR7XBk+fzJD2oonN8Hu8JEazq+q0gHQ5snMsNt959q86cLNZmHOgE4ubBatWdLa8F7DaGkBrrL5GJo2wGbbx87O2aY3f1a70LV9EzpYrN68GoXKQgb+rN+8UIBT1z2RYFCsh1K7g/UtF9Y2KLxRW9E5qkZti6j4kLeI0Nb3Bh38FXBGVLjPlRfNLwlAOc1iAOqZEwDTQu+iqh9iRowYMWLEOkd/AZxJER4k07LnAAAAAElFTkSuQmCC"
+              alt="om-emoji"
+            />
+          </div>
+          <div class="category-name">Religion books</div>
+        </div>
+        <div class="category-card">
+          <div class="category-img">
+            <img
+              src="data:image/png;base64,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"
+              alt="time-machine"
+            />
+          </div>
+          <div class="category-name">History books</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Books Section -->
+    <section id="featured-books">
+      <h2 class="section-title">best-sellers Books</h2>
+      <div class="book-slider">
+        <div class="book-card">
+          <div class="discount-badge">20% OFF</div>
+          <div class="book-thumb">
+            <img src="/psychology of money.webp" alt="Book Cover" />
+          </div>
+          <div class="book-info">
+            <div class="book-title">The Psychology of Money</div>
+            <div class="book-author">By Morgan Housel</div>
+            <div class="book-price">
+              <div>
+                <span class="old-price">699rs</span>
+                <span class="price">499rs</span>
+              </div>
+              <a
+                download
+                href="https://static.booktopia.com.au/pdf/9780857197689-1.pdf"
+                class="download"
+                >Download</a
+              >
+              <button class="add-to-cart">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+        <div class="book-card">
+          <div class="discount-badge">20% OFF</div>
+          <div class="book-thumb">
+            <img src="/atomic-habits-dots.png" width="50px" height="100px" />
+          </div>
+          <div class="book-info">
+            <div class="book-title">The Atomic Habits</div>
+            <div class="book-author">By James Clear</div>
+            <div class="book-price">
+              <div>
+                <span class="old-price">499rs</span>
+                <span class="price">299rs</span>
+              </div>
+              <a
+                download
+                href="https://businesswales.gov.wales/sites/maingel2/files/documents/Atomic%20Habits%20-%20James%20Clear%202018_0.pdf"
+                class="download"
+                >Download</a
+              >
+              <button class="add-to-cart">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <h2 class="section-title">What We Offer?</h2>
+      <div class="features-content">
+        <div class="features-grid">
+          <div class="feature-item">
+            <i class="fas fa-book-reader"></i>
+            <h3>Personalized Book Recommendations</h3>
+            <p>
+              Get tailored book suggestions based on your reading preferences
+              and interests.
+            </p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-bookmark"></i>
+            <h3>Book Reviews and Ratings</h3>
+            <p>
+              Read reviews from fellow readers and leave your own ratings to
+              help others discover great books.
+            </p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-robot"></i>
+            <h3>AI Chatbot for Book Recommendations</h3>
+            <p>
+              Get personalized book recommendations from our intelligent AI
+              chatbot. Simply share your reading preferences and discover your
+              next favorite book!
+            </p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-gift"></i>
+            <h3>Gift a Book</h3>
+            <p>
+              Surprise your loved ones with a thoughtful gift - a book that
+              matches their interests.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+      <div class="footer-content">
+        <!-- Book Review Section -->
+        <div class="footer-section review-section">
+          <h3>Book Reviews</h3>
+          <div class="review-form">
+            <h4>Share Your Thoughts</h4>
+            <form id="reviewForm">
+              <select id="bookSelect" required>
+                <option value="">Select a Book</option>
+                <option value="book1">Atomic Habits</option>
+                <option value="book2">To Kill a Mockingbird</option>
+                <option value="book3">psychology of money</option>
+              </select>
+              <div class="rating">
+                <input type="number" id="rating" min="1" max="5" required />
+                <label for="rating">Rating (1-5 stars)</label>
+              </div>
+              <textarea
+                id="reviewText"
+                placeholder="Write your review here..."
+                required
+              ></textarea>
+              <button type="submit" class="btn-primary">Submit Review</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="footer-section contact-section">
+          <h3>Contact Us</h3>
+          <div class="contact-info">
+            <p><i class="fas fa-envelope"></i> Email: vj887128.com</p>
+            <p><i class="fas fa-phone"></i> Phone: +91 (755) 940-7764</p>
+            <p>
+              <i class="fas fa-map-marker-alt"></i> Address: 123 Book Street,
+              Reading City
+            </p>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 BookVerse. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Hamburger Menu Toggle
+      const hamburger = document.querySelector(".hamburger");
+      const navLinks = document.querySelector(".nav-links");
+
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navLinks.classList.toggle("active");
+      });
+
+      // Close menu when a link is clicked
+      document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", () => {
+          hamburger.classList.remove("active");
+          navLinks.classList.remove("active");
+        });
+      });
+    </script>
+  </body>
+</html>
